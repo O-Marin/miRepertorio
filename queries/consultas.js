@@ -34,8 +34,31 @@ const deleteCancion = async (id) => {
     try{
         const result = await pool.query(borrarCancion);
         console.log(result.rows);
+        if (result.rowCount == 0) {
+
+            throw new Error("Cancion no encontrada");
+  
+          }
+        
+        
+        return result.rows;
+
+    }catch(err){console.log(err)}
+}
+
+const updateCancion = async(titulo,artista,tono, id) =>{
+    const actualizarCancion = {
+        text: 'update canciones set titulo = $1, artista = $2, tono = $3 where id = $4 returning *',
+        values: [titulo,artista,tono,id],
+    }
+    
+    try{
+        const result = await pool.query(actualizarCancion);
+
+        console.log(result.rows);
         return result.rows;
     }catch(err){console.log(err)}
 }
 
-export {getCancion, agregarCancion, deleteCancion}
+
+export {getCancion, agregarCancion, deleteCancion, updateCancion}

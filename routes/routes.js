@@ -1,5 +1,5 @@
 import express from 'express';
-import {getCancion, agregarCancion} from '../queries/consultas.js';
+import {getCancion, agregarCancion, deleteCancion, updateCancion} from '../queries/consultas.js';
 
 const router = express.Router();
 
@@ -21,13 +21,22 @@ router.get('/canciones', async (req,res)=>{
     res.json(canciones);
 })
 
-router.put('/cancion',(req,res)=>{
+router.put('/cancion/:id', async(req,res)=>{
+    const {id} = req.params;
+    const {titulo,artista,tono} = req.body;
+    const result = await updateCancion(titulo,artista,tono,id);
+
+    res.send(result)
     
 })
 
 router.delete('/cancion', async (req,res)=>{
-    
+    const {id} = req.query
+    const result = await deleteCancion(id);
+
+    res.send(result)
 })
+
 
 
 export default router;
